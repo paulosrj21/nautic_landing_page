@@ -223,7 +223,7 @@ export default function App() {
             </button>
 
             <motion.a 
-              href="https://wa.me/5585985410058" 
+              href="https://wa.me/5585936180186" 
               target="_blank"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -266,7 +266,7 @@ export default function App() {
                 </button>
               ))}
               <a 
-                href="https://wa.me/5585985410058"
+                href="https://wa.me/5585936180186"
                 className="mt-4 px-8 py-4 bg-emerald-500 text-white rounded-full text-lg font-bold shadow-xl shadow-emerald-500/30"
               >
                 Falar no WhatsApp
@@ -590,7 +590,7 @@ export default function App() {
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <motion.a 
-                href="https://wa.me/5585985410058"
+                href="https://wa.me/5585936180186"
                 target="_blank"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
