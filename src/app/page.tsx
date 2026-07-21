@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { motion, type Variants } from "framer-motion"
 
 const WA_NUMBER = "5585985410058"
 const WA_MSG = encodeURIComponent(
@@ -195,16 +195,16 @@ const NEXT_STEPS = [
   },
 ]
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 18 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.48, ease: [0.2, 0.7, 0.2, 1] },
+    transition: { duration: 0.48, ease: [0.2, 0.7, 0.2, 1] as [number, number, number, number] },
   },
 }
 
-const stagger = {
+const stagger: Variants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.07 } },
 }
