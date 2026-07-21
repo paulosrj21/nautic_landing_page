@@ -1,650 +1,709 @@
-"use client";
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
-import { 
-  Zap, 
-  BarChart3, 
-  CheckCircle2, 
-  ArrowRight, 
-  Menu, 
-  X, 
-  FileSpreadsheet, 
-  FileText, 
-  MonitorCheck, 
-  AlertTriangle, 
-  PieChart, 
-  TrendingUp, 
-  Users, 
-  ShieldCheck, 
-  Mail, 
-  Phone,
-  Database,
-  Layers,
-  Moon,
-  Sun
-} from 'lucide-react';
+"use client"
 
-const Trident = ({ size = 24, className = "" }: { size?: number, className?: string }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className={className}
-  >
-    <path d="M12 2v20" />
-    <path d="M5 6v3a7 7 0 0 0 14 0V6" />
-    <path d="M5 4v2" />
-    <path d="M19 4v2" />
-    <path d="M12 2l-2 2" />
-    <path d="M12 2l2 2" />
-  </svg>
-);
+import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
 
-interface ServiceItem {
-  title: string;
-  desc: string;
-  icon: React.ReactNode;
-}
+const WA_NUMBER = "5585985410058"
+const WA_MSG = encodeURIComponent(
+  "Olá! Vi o site da NauticTech e gostaria de saber mais sobre a consultoria."
+)
+const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${WA_MSG}`
 
-interface DashboardItem {
-  title: string;
-  desc: string;
-  icon: React.ReactNode;
-}
+const NAV = [
+  { label: "Metodologia", href: "#metodologia" },
+  { label: "Serviços", href: "#entregaveis" },
+  { label: "Preços", href: "#precos" },
+  { label: "Por que nós", href: "#diferenciais" },
+]
 
-const NAV_LINKS = [
-  { label: 'Missão', href: '#missao' },
-  { label: 'Diferenciais', href: '#diferenciais' },
-  { label: 'Serviços', href: '#servicos' },
-  { label: 'Dashboards', href: '#dashboards' },
-];
+const PAIN_POINTS = [
+  {
+    title: "Processos sem padronização",
+    desc: "Retrabalho constante, inconsistências entre times e dependência de pessoas que concentram o conhecimento.",
+  },
+  {
+    title: "Sem visibilidade de performance",
+    desc: "Ausência de indicadores operacionais. Gestão no feeling, sem dados para embasar decisões estratégicas.",
+  },
+  {
+    title: "Gargalos operacionais",
+    desc: "Etapas que travam o fluxo de trabalho causando atrasos, perdas de prazo e frustração de clientes.",
+  },
+  {
+    title: "Equipe sobrecarregada",
+    desc: "Time executando tarefas manuais e repetitivas que poderiam ser automatizadas — energia drenada do estratégico.",
+  },
+]
+
+const METHODOLOGY = [
+  {
+    num: "01",
+    title: "Diagnóstico",
+    desc: "Mapeamento de processos prioritários via entrevistas estruturadas. Identificação de gargalos e oportunidades.",
+  },
+  {
+    num: "02",
+    title: "AS-IS",
+    desc: "Documentação do estado atual: etapas, responsáveis, ferramentas, tempos e volumes. Validação com os donos de processo.",
+  },
+  {
+    num: "03",
+    title: "Análise de GAP",
+    desc: "Comparação com boas práticas do setor. Priorização das oportunidades por impacto e esforço.",
+  },
+  {
+    num: "04",
+    title: "TO-BE",
+    desc: "Redesenho do processo futuro com eliminação de desperdícios e proposta de ferramentas e automações.",
+  },
+  {
+    num: "05",
+    title: "Plano de Ação",
+    desc: "Roadmap com ações priorizadas, responsáveis e prazos. Quick wins identificados e entregues primeiro.",
+  },
+  {
+    num: "06",
+    title: "Rituais",
+    desc: "Check-ins semanais, revisão mensal de indicadores e relatório executivo para a liderança.",
+  },
+]
+
+const DELIVERABLES = [
+  {
+    title: "Documento AS-IS",
+    desc: "Mapeamento completo do estado atual de cada processo, validado com as áreas.",
+    freq: "Por processo",
+  },
+  {
+    title: "Documento TO-BE",
+    desc: "Redesenho do fluxo futuro com ganhos estimados e responsáveis definidos.",
+    freq: "Por processo",
+  },
+  {
+    title: "Plano de Ação",
+    desc: "Ações priorizadas por impacto e esforço, com prazos e donos claros.",
+    freq: "Mensal",
+  },
+  {
+    title: "Painel de Indicadores",
+    desc: "KPIs do processo com baseline, meta e acompanhamento da evolução.",
+    freq: "Mensal",
+  },
+  {
+    title: "Relatório Executivo",
+    desc: "Sumário gerencial: avanços, resultados, pendências e próximos passos.",
+    freq: "Mensal",
+  },
+  {
+    title: "Ata de Reuniões",
+    desc: "Registro de decisões, ações e responsáveis de cada rito de acompanhamento.",
+    freq: "Por reunião",
+  },
+]
+
+const PRICING = [
+  {
+    name: "START",
+    price: "1.500",
+    tagline: "Para empresas iniciando estruturação de processos.",
+    features: [
+      "1 processo por mês",
+      "AS-IS + TO-BE + Plano de Ação",
+      "Check-in quinzenal (30 min)",
+      "Revisão mensal com relatório",
+      "Suporte WhatsApp comercial",
+    ],
+    contract: "Contrato mínimo: 3 meses",
+    highlight: false,
+  },
+  {
+    name: "GROWTH",
+    price: "3.000",
+    tagline: "Para empresas em crescimento que precisam de visibilidade operacional.",
+    features: [
+      "Até 3 processos ativos",
+      "AS-IS + TO-BE + Indicadores (KPIs)",
+      "Check-ins semanais (30 min)",
+      "Revisão mensal + relatório executivo",
+      "Painel de acompanhamento",
+      "Suporte WhatsApp prioritário",
+    ],
+    contract: "Contrato mínimo: 3 meses",
+    highlight: true,
+  },
+  {
+    name: "SCALE",
+    price: "5.000",
+    tagline: "Médias empresas estruturando eficiência operacional para escalar.",
+    features: [
+      "Escritório de Processos completo",
+      "Todos os processos do escopo",
+      "Check-ins semanais + workshop mensal",
+      "Revisão executiva trimestral",
+      "Diagnóstico de performance mensal",
+      "Relatório de diretoria",
+      "Reuniões on-site inclusas",
+    ],
+    contract: "Contrato mínimo: 3 meses",
+    highlight: false,
+  },
+]
 
 const DIFFERENTIALS = [
   {
-    title: "Experiência Prática",
-    desc: "Atuação comprovada em escritórios de contabilidade e grandes empresas.",
-    icon: <CheckCircle2 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+    title: "Perfil Híbrido",
+    desc: "Combinamos BPM/BPMN e consultoria de performance. Não apenas mapeamos processos — entendemos como impactam receita, custo e pessoas.",
   },
   {
-    title: "Contabilidade + Tech",
-    desc: "Unimos o rigor contábil com a inovação tecnológica.",
-    icon: <Trident className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+    title: "Foco em Resultado",
+    desc: "Definimos indicadores de sucesso antes de começar e acompanhamos até o cliente sentir a mudança real na operação.",
   },
   {
-    title: "Foco em Resultados",
-    desc: "Redução de erros e aumento real de produtividade.",
-    icon: <TrendingUp className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-  }
-];
+    title: "Proximidade Local",
+    desc: "Atendemos Fortaleza e região com disponibilidade para reuniões presenciais. A relação é de parceria, não de fornecedor remoto.",
+  },
+  {
+    title: "Metodologia Clara",
+    desc: "Usamos BPMN para modelagem, mas entregamos para o negócio — sem jargão. Diagramas e relatórios sempre compreensíveis para gestores.",
+  },
+  {
+    title: "Porta para Automação",
+    desc: "Processo bem mapeado vira automação com muito mais velocidade e precisão. Acesso facilitado a projetos de automação via NauticTech.",
+  },
+]
 
-const SERVICES: ServiceItem[] = [
-  { title: "Integração de Planilhas", desc: "Centralize dados de clientes automaticamente.", icon: <FileSpreadsheet /> },
-  { title: "Faturas ENEL via API", desc: "Download e acompanhamento automático.", icon: <Zap /> },
-  { title: "Escrituração de NFs", desc: "Automação fiscal em ERPs.", icon: <FileText /> },
-  { title: "Monitoramento DETRAN", desc: "Acompanhamento de multas.", icon: <MonitorCheck /> },
-  { title: "Alertas Fiscais", desc: "Notificações de impostos e obrigações.", icon: <AlertTriangle /> },
-  { title: "Relatórios de Divergências", desc: "Identificação de inconsistências.", icon: <ShieldCheck /> },
-  { title: "Envio de Relatórios", desc: "Automação para clientes.", icon: <Mail /> },
-  { title: "Consultoria de Processos", desc: "Mapeamento e otimização de fluxos.", icon: <Layers /> },
-];
+const NEXT_STEPS = [
+  {
+    title: "Aprovação da proposta",
+    desc: "Confirmação por WhatsApp ou assinatura de contrato formal.",
+  },
+  {
+    title: "Envio do contrato",
+    desc: "Contrato digital enviado via DocuSign em até 24 horas.",
+  },
+  {
+    title: "Primeiro pagamento",
+    desc: "Emissão de boleto ou PIX referente ao primeiro mês.",
+  },
+  {
+    title: "Kick-off",
+    desc: "Reunião de abertura para alinhar agenda, participantes e materiais necessários.",
+  },
+  {
+    title: "Início do mapeamento",
+    desc: "Primeiras entrevistas e coleta de documentação dos processos priorizados.",
+  },
+]
 
-const DASHBOARDS: DashboardItem[] = [
-  { title: "Fluxo de Caixa", desc: "Entradas, saídas e previsões.", icon: <BarChart3 /> },
-  { title: "Desempenho Tributário", desc: "Análise de carga fiscal.", icon: <PieChart /> },
-  { title: "Resultados Contábeis", desc: "DRE e Balanço interativos.", icon: <FileText /> },
-  { title: "Rentabilidade Cliente", desc: "Lucratividade real.", icon: <Users /> },
-  { title: "Produtividade", desc: "Monitoramento de equipe.", icon: <Trident /> },
-  { title: "Compliance", desc: "Risco fiscal e certidões.", icon: <ShieldCheck /> },
-  { title: "Gestão de Passivos", desc: "Controle de multas e juros.", icon: <AlertTriangle /> },
-  { title: "Benchmarking", desc: "Comparativo entre filiais.", icon: <TrendingUp /> },
-  { title: "Churn & Growth", desc: "Métricas de crescimento.", icon: <Database /> },
-];
-
-const fadeInUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (custom: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut", delay: custom * 0.1 }
-  })
-};
-
-const staggerContainer: Variants = {
-  hidden: { opacity: 0 },
+const fadeUp = {
+  hidden: { opacity: 0, y: 18 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
+    y: 0,
+    transition: { duration: 0.48, ease: [0.2, 0.7, 0.2, 1] },
+  },
+}
 
+const stagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.07 } },
+}
 
-const SectionTitle = ({ title, subtitle, isDark, light = false }: { title: string, subtitle?: boolean, isDark: boolean, light?: boolean }) => (
-  <div className="mb-12 md:mb-16 text-center max-w-3xl mx-auto px-4">
-    <motion.h2 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className={`text-3xl md:text-4xl font-bold mb-4 tracking-tighter ${light ? 'text-white' : (isDark ? 'text-white' : 'text-slate-900')}`}
-    >
-      {title}
-    </motion.h2>
-    {subtitle && (
-      <motion.div 
-        initial={{ width: 0 }}
-        whileInView={{ width: 60 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className={`h-1 mx-auto rounded-full ${light ? 'bg-blue-400' : 'bg-blue-600'}`} 
-      />
-    )}
-  </div>
-);
+function IconWA() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.132.556 4.133 1.529 5.874L.057 23.432a.5.5 0 00.608.608l5.532-1.467A11.953 11.953 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.81 9.81 0 01-5.064-1.404l-.363-.218-3.282.87.886-3.213-.236-.371A9.785 9.785 0 012.182 12c0-5.415 4.403-9.818 9.818-9.818 5.415 0 9.818 4.403 9.818 9.818 0 5.415-4.403 9.818-9.818 9.818z" />
+    </svg>
+  )
+}
 
+const DIFF_ICONS = [
+  // Layers
+  <svg key={0} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>,
+  // Trend
+  <svg key={1} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
+  // Pin
+  <svg key={2} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+  // Grid
+  <svg key={3} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>,
+  // Bolt
+  <svg key={4} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+]
 
-export default function App() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
-  
+export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToSection = (id: string) => {
-    setIsMenuOpen(false);
-    const element = document.querySelector(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const toggleTheme = () => {
-    setDarkMode(!darkMode);
-  };
-
-  const bgMain = darkMode ? 'bg-slate-950' : 'bg-slate-50';
-  const bgSection = darkMode ? 'bg-slate-900' : 'bg-white';
-  const bgSectionAlt = darkMode ? 'bg-slate-950' : 'bg-slate-50';
-  const textMain = darkMode ? 'text-slate-300' : 'text-slate-600';
-  const textTitle = darkMode ? 'text-white' : 'text-slate-900';
-  const cardBg = darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100';
+    const handler = () => setScrolled(window.scrollY > 20)
+    window.addEventListener("scroll", handler, { passive: true })
+    return () => window.removeEventListener("scroll", handler)
+  }, [])
 
   return (
-    <div className={`min-h-screen font-sans antialiased selection:bg-blue-500 selection:text-white transition-colors duration-300 ${bgMain} ${textMain}`}>
-      
-      <header 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
-          scrolled 
-            ? (darkMode ? 'bg-slate-900/90 border-slate-800 shadow-lg' : 'bg-white/80 border-slate-200 shadow-sm') + ' backdrop-blur-md py-3' 
-            : 'bg-transparent border-transparent py-5'
-        }`}
-      >
-        <div className="container mx-auto px-6 max-w-7xl flex items-center justify-between">
-          <a href="#" className="flex items-center gap-2 z-50 group">
-            <div className="bg-blue-600 text-white p-1.5 rounded-lg group-hover:bg-blue-700 transition-colors">
-              <Trident size={24} />
-            </div>
-            <div className="leading-tight">
-              <span className={`block text-xl font-bold tracking-tighter ${darkMode ? 'text-white' : 'text-slate-900'}`}>Nautic</span>
-            </div>
-          </a>
-
-          {/* Desktop Nav */}
-          <nav className={`hidden md:flex items-center gap-8 px-6 py-2 rounded-full backdrop-blur-sm border ${darkMode ? 'bg-slate-800/50 border-white/10' : 'bg-white/50 border-white/20'}`}>
-            {NAV_LINKS.map((link) => (
-              <button 
-                key={link.label}
-                onClick={() => scrollToSection(link.href)}
-                className={`text-sm font-medium hover:text-blue-500 transition-colors relative group ${darkMode ? 'text-slate-200' : 'text-slate-600'}`}
-              >
-                {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full" />
-              </button>
-            ))}
-          </nav>
-
-          <div className="hidden md:flex items-center gap-4">
-            <button 
-              onClick={toggleTheme}
-              className={`p-2.5 rounded-full transition-colors ${darkMode ? 'bg-slate-800 text-yellow-400 hover:bg-slate-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-              title="Alternar Tema"
-            >
-              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-
-            <motion.a 
-              href="https://wa.me/5585936180186" 
-              target="_blank"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full text-sm font-bold transition-all shadow-lg shadow-emerald-500/20 flex items-center gap-2"
-            >
-              <Phone size={16} /> Falar no WhatsApp
-            </motion.a>
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <div className="flex items-center gap-4 md:hidden z-50">
-            <button 
-                onClick={toggleTheme}
-                className={`p-2 rounded-full transition-colors ${darkMode ? 'text-yellow-400' : 'text-slate-600'}`}
-              >
-                {darkMode ? <Sun size={24} /> : <Moon size={24} />}
-            </button>
-            <button className={darkMode ? 'text-white' : 'text-slate-800'} onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
-          </div>
+    <>
+      {/* ─── TOPBAR ─── */}
+      <header className={`topbar${scrolled ? " scrolled" : ""}`}>
+        <div className="brand-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
+          </svg>
+        </div>
+        <div>
+          <div className="brand-name">NauticTech</div>
+          <div className="brand-sub">Processos & Performance</div>
         </div>
 
-        {/* Mobile Nav */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div 
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className={`absolute top-0 left-0 w-full h-screen flex flex-col items-center justify-center gap-8 md:hidden z-40 ${darkMode ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
-            >
-              {NAV_LINKS.map((link) => (
-                <button 
-                  key={link.label}
-                  onClick={() => scrollToSection(link.href)}
-                  className="text-2xl font-bold tracking-tight"
-                >
-                  {link.label}
-                </button>
-              ))}
-              <a 
-                href="https://wa.me/5585936180186"
-                className="mt-4 px-8 py-4 bg-emerald-500 text-white rounded-full text-lg font-bold shadow-xl shadow-emerald-500/30"
-              >
-                Falar no WhatsApp
-              </a>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className="topbar-sep hidden-mobile" />
+
+        <nav className="hidden-mobile" style={{ display: "flex", alignItems: "center" }}>
+          {NAV.map((n) => (
+            <a key={n.href} href={n.href} className="nav-item">{n.label}</a>
+          ))}
+        </nav>
+
+        <div className="topbar-ml" />
+
+        <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--wa hidden-mobile">
+          <IconWA /> Falar no WhatsApp
+        </a>
+
+        <button
+          className="btn btn--ghost show-mobile"
+          onClick={() => setMenuOpen(true)}
+          aria-label="Abrir menu"
+          style={{ padding: "8px 10px" }}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
       </header>
 
-      <section className={`relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden transition-colors duration-500 ${darkMode ? 'bg-slate-950' : 'bg-gradient-to-br from-white via-blue-50/30 to-white'}`}>
-        <div className={`absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l pointer-events-none transition-colors duration-500 ${darkMode ? 'from-blue-900/10 to-transparent' : 'from-blue-50/50 to-transparent'}`} />
-        
-        <div className="container mx-auto px-6 max-w-7xl relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            
-            <motion.div 
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center lg:text-left"
-            >
-              <div className={`inline-block px-3 py-1 rounded-full border text-xs font-bold tracking-wide uppercase mb-6 ${darkMode ? 'bg-blue-900/30 border-blue-800 text-blue-300' : 'bg-blue-100/80 border-blue-200 text-blue-700'}`}>
-                Revolucione sua gestão
-              </div>
-
-              <h1 className={`text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tighter leading-[1.1] ${textTitle}`}>
-                Automação e Digitalização <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-                  para a Sua Empresa
-                </span>
-              </h1>
-
-              <p className={`text-lg max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed ${textMain}`}>
-                Otimize processos, reduza erros operacionais e impulsione a eficiência do seu negócio com soluções de tecnologia sob medida.
-              </p>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
-                <motion.button 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => scrollToSection('#contato')}
-                  className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-lg shadow-blue-600/25 transition-all flex items-center justify-center gap-2"
-                >
-                  Solicitar Diagnóstico
-                </motion.button>
-                <motion.button 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => scrollToSection('#servicos')}
-                  className={`w-full sm:w-auto px-8 py-4 border rounded-xl font-bold transition-all ${darkMode ? 'bg-slate-900 border-slate-700 text-white hover:bg-slate-800' : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200'}`}
-                >
-                  Ver Serviços
-                </motion.button>
-              </div>
-
-              <div className={`flex flex-wrap justify-center lg:justify-start gap-6 text-sm font-semibold ${darkMode ? 'text-slate-400' : 'text-slate-700'}`}>
-                <span className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border shadow-sm ${darkMode ? 'bg-slate-900/50 border-slate-800' : 'bg-white/60 border-slate-100'}`}>
-                  <CheckCircle2 className="text-emerald-500 w-4 h-4" /> Reduza tarefas manuais
-                </span>
-                <span className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border shadow-sm ${darkMode ? 'bg-slate-900/50 border-slate-800' : 'bg-white/60 border-slate-100'}`}>
-                  <CheckCircle2 className="text-emerald-500 w-4 h-4" /> Aumente a produtividade
-                </span>
-                <span className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border shadow-sm ${darkMode ? 'bg-slate-900/50 border-slate-800' : 'bg-white/60 border-slate-100'}`}>
-                  <CheckCircle2 className="text-emerald-500 w-4 h-4" /> Insights estratégicos
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Right Column: Abstract Visual Composition */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative h-[400px] hidden lg:block"
-            >
-              {/* Fake Dashboard Elements */}
-              <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[280px] rounded-2xl shadow-2xl border z-20 flex flex-col p-4 transition-colors duration-500 ${darkMode ? 'bg-slate-900 border-slate-800 shadow-black/50' : 'bg-white border-slate-100 shadow-2xl'}`}>
-                {/* Mock Header */}
-                <div className={`flex items-center gap-2 mb-4 border-b pb-2 ${darkMode ? 'border-slate-800' : 'border-slate-50'}`}>
-                  <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
-                  <div className={`ml-auto w-20 h-2 rounded-full ${darkMode ? 'bg-slate-800' : 'bg-slate-100'}`}></div>
-                </div>
-                {/* Mock Content */}
-                <div className="flex gap-4 h-full">
-                  <div className={`w-1/3 rounded-lg p-2 flex flex-col gap-2 ${darkMode ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
-                     <div className={`w-full h-8 rounded mb-2 ${darkMode ? 'bg-blue-900/50' : 'bg-blue-100'}`}></div>
-                     <div className={`w-full h-2 rounded ${darkMode ? 'bg-slate-700' : 'bg-slate-200'}`}></div>
-                     <div className={`w-2/3 h-2 rounded ${darkMode ? 'bg-slate-700' : 'bg-slate-200'}`}></div>
-                  </div>
-                  <div className="w-2/3 flex flex-col gap-3">
-                    <div className="flex gap-2">
-                      <div className={`w-1/2 h-20 rounded-lg flex items-center justify-center ${darkMode ? 'bg-indigo-900/30' : 'bg-indigo-50'}`}>
-                        <PieChart className="text-indigo-400 w-8 h-8" />
-                      </div>
-                      <div className={`w-1/2 h-20 rounded-lg flex items-center justify-center ${darkMode ? 'bg-emerald-900/30' : 'bg-emerald-50'}`}>
-                        <BarChart3 className="text-emerald-400 w-8 h-8" />
-                      </div>
-                    </div>
-                    <div className={`flex-1 rounded-lg p-3 ${darkMode ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
-                      <div className="w-full h-full flex items-end justify-between gap-1">
-                        <div className="w-full bg-blue-400/60 rounded-t h-[40%]"></div>
-                        <div className="w-full bg-blue-500/60 rounded-t h-[70%]"></div>
-                        <div className="w-full bg-blue-600/60 rounded-t h-[50%]"></div>
-                        <div className="w-full bg-blue-500/80 rounded-t h-[80%]"></div>
-                        <div className="w-full bg-blue-600/80 rounded-t h-[60%]"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating Cards */}
-              <motion.div 
-                animate={{ y: [0, -10, 0] }}
-                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                className={`absolute top-0 right-10 p-4 rounded-xl shadow-xl border z-30 flex items-center gap-3 transition-colors duration-500 ${darkMode ? 'bg-slate-800 border-slate-700 shadow-black/30' : 'bg-white border-slate-50 shadow-xl'}`}
-              >
-                <div className={`p-2 rounded-lg ${darkMode ? 'bg-green-900/30' : 'bg-green-100'}`}><CheckCircle2 className="text-green-500 w-5 h-5"/></div>
-                <div>
-                  <div className={`text-xs ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Tarefas</div>
-                  <div className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-slate-800'}`}>100% Concluído</div>
-                </div>
-              </motion.div>
-
-              <motion.div 
-                animate={{ y: [0, 15, 0] }}
-                transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
-                className={`absolute bottom-10 left-0 p-4 rounded-xl shadow-xl border z-30 flex items-center gap-3 transition-colors duration-500 ${darkMode ? 'bg-slate-800 border-slate-700 shadow-black/30' : 'bg-white border-slate-50 shadow-xl'}`}
-              >
-                <div className={`p-2 rounded-lg ${darkMode ? 'bg-blue-900/30' : 'bg-blue-100'}`}><TrendingUp className="text-blue-500 w-5 h-5"/></div>
-                <div>
-                  <div className={`text-xs ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Produtividade</div>
-                  <div className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-slate-800'}`}>+45% Growth</div>
-                </div>
-              </motion.div>
-
-              <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-3xl -z-10 transition-colors duration-500 ${darkMode ? 'bg-indigo-900/20' : 'bg-indigo-50/50'}`} />
-            </motion.div>
+      {/* ─── MOBILE MENU ─── */}
+      {menuOpen && (
+        <div className="mobile-menu">
+          <div className="mobile-menu-header">
+            <div>
+              <div className="brand-name">NauticTech</div>
+              <div className="brand-sub">Processos & Performance</div>
+            </div>
+            <button className="btn btn--ghost" onClick={() => setMenuOpen(false)} aria-label="Fechar menu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+          {NAV.map((n) => (
+            <a key={n.href} href={n.href} className="mobile-nav-link" onClick={() => setMenuOpen(false)}>
+              {n.label}
+            </a>
+          ))}
+          <div className="mobile-cta">
+            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--wa btn--lg" style={{ width: "100%", justifyContent: "center" }}>
+              <IconWA /> (85) 98541-0058
+            </a>
           </div>
         </div>
-      </section>
+      )}
 
-      <section id="missao" className={`py-24 transition-colors duration-500 ${bgSection}`}>
-        <div className="container mx-auto px-6 max-w-4xl text-center">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-            className="relative"
-          >
-            <div className="w-0.5 h-12 bg-blue-600 mx-auto mb-8 opacity-30"></div>
-            
-            <h2 className={`text-3xl md:text-4xl font-bold mb-8 tracking-tight ${textTitle}`}>
-              A Nossa Missão
-            </h2>
-            <div className={`space-y-6 text-xl md:text-2xl leading-relaxed font-light ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-              <p>
-                “Criamos e implementamos as melhores soluções de <strong className={`font-semibold ${textTitle}`}>automação</strong> para a sua transformação digital.”
-              </p>
-              <p className={`text-lg md:text-xl ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                Comprovada experiência no desenvolvimento de soluções que otimizam rotinas, reduzem erros manuais e aumentam a eficiência das equipas através de <strong className="font-semibold text-blue-600 dark:text-blue-400">Power BI</strong> e scripts inteligentes.
-              </p>
-            </div>
-            
-            <div className={`mt-12 pt-12 border-t flex items-center justify-center gap-2 text-sm font-medium uppercase tracking-widest ${darkMode ? 'border-slate-800 text-slate-500' : 'border-slate-100 text-slate-400'}`}>
-               <ShieldCheck size={16} /> Experiência Comprovada
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <main>
+        {/* ─── HERO ─── */}
+        <section className="hero" id="inicio">
+          <div className="hero-bg" />
+          <div className="container">
+            <div className="hero-grid">
 
-      <section id="diferenciais" className={`py-24 transition-colors duration-500 ${bgSectionAlt}`}>
-        <div className="container mx-auto px-6 max-w-7xl">
-          <SectionTitle title="Os Nossos Diferenciais" subtitle isDark={darkMode} />
-          
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          >
-            {DIFFERENTIALS.map((diff, idx) => (
-              <motion.div key={idx} variants={fadeInUp} custom={idx} className="h-full">
-                <div className={`rounded-2xl p-8 shadow-sm border h-full hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group ${cardBg}`}>
-                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-blue-600 transition-transform duration-300 group-hover:scale-110 ${darkMode ? 'bg-slate-800' : 'bg-blue-50'}`}>
-                    {React.cloneElement(diff.icon as React.ReactElement<any>, { size: 28 })}
+              {/* Left */}
+              <motion.div initial="hidden" animate="visible" variants={stagger}>
+                <motion.div variants={fadeUp}>
+                  <div className="hero-tag">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4" /></svg>
+                    Consultoria · Fortaleza, CE
                   </div>
-                  <h3 className={`text-xl font-bold mb-3 ${textTitle}`}>{diff.title}</h3>
-                  <p className={`leading-relaxed text-sm md:text-base ${textMain}`}>
-                    {diff.desc}
-                  </p>
-                </div>
+                </motion.div>
+                <motion.h1 className="hero-title" variants={fadeUp}>
+                  Transformamos<br />processos em<br /><span>vantagem</span><br />competitiva.
+                </motion.h1>
+                <motion.p className="hero-subtitle" variants={fadeUp}>
+                  Consultoria especializada em gestão de processos, análise de performance e automação. Seu time foca no estratégico — a operação evolui.
+                </motion.p>
+                <motion.div className="hero-actions" variants={fadeUp}>
+                  <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--wa btn--lg">
+                    <IconWA /> Quero uma proposta
+                  </a>
+                  <a href="#metodologia" className="btn btn--outline btn--lg">
+                    Ver metodologia
+                  </a>
+                </motion.div>
               </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
 
-      <section id="servicos" className={`py-24 relative transition-colors duration-500 ${bgSection}`}>
-        <div className="container mx-auto px-6 max-w-7xl relative z-10">
-          <SectionTitle title="Serviços de Automação & Otimização" subtitle isDark={darkMode} />
-
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
-          >
-            {SERVICES.map((service, idx) => (
-              <motion.div key={idx} variants={fadeInUp} custom={idx} className="group">
-                <div className={`p-6 rounded-2xl border shadow-sm h-full transition-all duration-300 hover:bg-blue-600 hover:border-blue-600 hover:shadow-blue-900/20 group-hover:-translate-y-1 cursor-default ${cardBg}`}>
-                  <div className={`mb-4 transition-colors group-hover:text-white ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>
-                    {React.cloneElement(service.icon as React.ReactElement<any>, { size: 28 })}
-                  </div>
-                  <h3 className={`text-lg font-bold mb-2 transition-colors group-hover:text-white ${textTitle}`}>
-                    {service.title}
-                  </h3>
-                  <p className={`text-sm transition-colors group-hover:text-blue-100 leading-relaxed ${textMain}`}>
-                    {service.desc}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Destaque Banner */}
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-blue-600 rounded-3xl p-8 md:p-16 text-center text-white shadow-2xl shadow-blue-900/20 max-w-5xl mx-auto overflow-hidden relative"
-          >
-            <div className="absolute top-0 right-0 -mr-10 -mt-10 w-64 h-64 bg-blue-500 rounded-full blur-3xl opacity-50" />
-            <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-64 h-64 bg-indigo-600 rounded-full blur-3xl opacity-50" />
-            
-            <div className="relative z-10">
-              <h3 className="text-2xl md:text-3xl font-bold mb-4">
-                "As nossas soluções são desenhadas para transformar a sua operação."
-              </h3>
-              <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
-                Elimine tarefas repetitivas e foque no que realmente importa: o crescimento do seu negócio.
-              </p>
-              <button 
-                onClick={() => scrollToSection('#contato')}
-                className="px-8 py-3 bg-white text-blue-700 hover:bg-blue-50 rounded-full font-bold transition-colors shadow-lg"
+              {/* Right — process mockup */}
+              <motion.div
+                className="hero-card-wrap"
+                initial={{ opacity: 0, x: 28 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.18, ease: [0.2, 0.7, 0.2, 1] }}
               >
-                Quero automatizar meu processo
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+                <div className="hero-floating">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2ea368" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  TO-BE validado
+                </div>
 
-      <section id="dashboards" className="py-24 bg-slate-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+                <div className="hero-card">
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+                    <span className="mono" style={{ fontSize: 11, color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "1.4px" }}>
+                      Processo ativo
+                    </span>
+                    <span className="badge badge--info">Em andamento</span>
+                  </div>
 
-        <div className="container mx-auto px-6 max-w-7xl relative z-10">
-          <SectionTitle title="Dashboards Inteligentes" subtitle light isDark={true} />
-          
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
-            <div className="lg:col-span-1">
-              <h3 className="text-2xl font-bold mb-4 text-white">Insights para Decisão</h3>
-              <p className="text-slate-400 mb-6 leading-relaxed">
-                Transforme dados brutos em inteligência. Nossos dashboards interativos permitem que você visualize a saúde do seu negócio em tempo real.
-              </p>
-              <div className="p-4 bg-white/5 rounded-xl border border-white/10 backdrop-blur-sm">
-                <div className="text-4xl font-bold text-emerald-400 mb-1">100%</div>
-                <div className="text-xs text-slate-500 uppercase tracking-wider">Visualização de Dados</div>
-              </div>
-            </div>
+                  <div style={{ fontSize: 16, fontWeight: 600, color: "var(--ink)", marginBottom: 4 }}>
+                    Onboarding de Clientes
+                  </div>
+                  <div style={{ fontSize: 13, color: "var(--ink-2)", marginBottom: 14 }}>
+                    <span className="mono">Fase 03/06</span> — Análise de GAP
+                  </div>
 
-            {/* Right Column: Grid */}
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={staggerContainer}
-              className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
-            >
-              {DASHBOARDS.map((dash, idx) => (
-                <motion.div key={idx} variants={fadeInUp} custom={idx}>
-                  <div className="bg-white/5 backdrop-blur-sm border border-white/5 p-5 rounded-xl hover:bg-white/10 hover:border-blue-500/30 transition-all duration-300 group h-full">
-                    <div className="flex items-start gap-3">
-                      <div className="mt-1 text-blue-400 group-hover:text-blue-300 transition-colors group-hover:scale-110 duration-300">
-                        {React.cloneElement(dash.icon as React.ReactElement<any>, { size: 20 })}
-                      </div>
-                      <div>
-                        <h4 className="text-base font-bold text-slate-100 mb-1">{dash.title}</h4>
-                        <p className="text-xs text-slate-400 leading-relaxed">{dash.desc}</p>
-                      </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                      <span className="mono" style={{ fontSize: 11, color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "1px" }}>Progresso</span>
+                      <span className="mono" style={{ fontSize: 12, color: "var(--primary)", fontWeight: 500 }}>58%</span>
                     </div>
+                    <div className="progress-track">
+                      <div className="progress-fill" style={{ width: "58%", background: "var(--primary)" }} />
+                    </div>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
+                    {[
+                      { label: "Tempo de ciclo", value: "10d → 3d", note: "-70% estimado" },
+                      { label: "Retrabalho", value: "-42%", note: "vs. AS-IS" },
+                    ].map((s) => (
+                      <div key={s.label} style={{ background: "var(--panel-2)", borderRadius: "var(--radius-sm)", padding: "12px 14px" }}>
+                        <div className="mono" style={{ fontSize: 10, color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "1px", marginBottom: 6 }}>
+                          {s.label}
+                        </div>
+                        <div style={{ fontSize: 18, fontWeight: 600, color: "var(--ink)", letterSpacing: "-0.5px" }}>{s.value}</div>
+                        <div style={{ fontSize: 11, color: "var(--success)", marginTop: 2 }}>{s.note}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 12, borderTop: "1px solid var(--line)" }}>
+                    <span style={{ fontSize: 13, color: "var(--ink-2)" }}>KPIs ativos</span>
+                    <span className="mono" style={{ fontSize: 13, color: "var(--primary)", fontWeight: 600 }}>12</span>
+                  </div>
+                </div>
+
+                <div className="hero-card-mini">
+                  <div style={{ width: 28, height: 28, borderRadius: "50%", background: "rgba(46,163,104,.12)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2ea368" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 500, color: "var(--ink)" }}>
+                      Ganho de <strong>7 dias</strong> no ciclo documentado
+                    </div>
+                    <div className="mono" style={{ fontSize: 10, color: "var(--ink-3)", marginTop: 2, textTransform: "uppercase", letterSpacing: "0.8px" }}>
+                      Entregável TO-BE aprovado
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* ─── PAIN POINTS ─── */}
+        <section id="dores">
+          <div className="container">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
+              <div className="section-kicker">
+                <span className="section-kicker-num">01</span>
+                <span className="section-kicker-line" />
+                <span>Contexto</span>
+              </div>
+              <h2 className="section-title">Esses cenários<br />são familiares?</h2>
+              <p className="section-sub">
+                Trabalhamos com empresas que sentem esses problemas diariamente. A boa notícia: todos têm solução estruturada.
+              </p>
+            </motion.div>
+
+            <motion.div className="pain-grid" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
+              {PAIN_POINTS.map((p, i) => (
+                <motion.div key={i} className="pain-card" variants={fadeUp}>
+                  <div className="pain-num">0{i + 1}</div>
+                  <div className="pain-title">{p.title}</div>
+                  <div className="pain-desc">{p.desc}</div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ─── METHODOLOGY ─── */}
+        <section id="metodologia" className="methodology-section">
+          <div className="container">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
+              <div className="section-kicker">
+                <span className="section-kicker-num">02</span>
+                <span className="section-kicker-line" />
+                <span>Metodologia</span>
+              </div>
+              <h2 className="section-title">Como trabalhamos</h2>
+              <p className="section-sub">
+                Uma sequência estruturada que garante profundidade no diagnóstico, clareza no redesenho e aderência na implementação — com o time do cliente como protagonista.
+              </p>
+            </motion.div>
+
+            <motion.div className="methodology-grid" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
+              {METHODOLOGY.map((m, i) => (
+                <motion.div key={i} className="method-step" variants={fadeUp}>
+                  <div className="method-num">{m.num}</div>
+                  <div className="method-title">{m.title}</div>
+                  <div className="method-desc">{m.desc}</div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ─── DELIVERABLES ─── */}
+        <section id="entregaveis">
+          <div className="container">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
+              <div className="section-kicker">
+                <span className="section-kicker-num">03</span>
+                <span className="section-kicker-line" />
+                <span>Entregáveis</span>
+              </div>
+              <h2 className="section-title">O que você recebe</h2>
+              <p className="section-sub">
+                Todos os documentos são entregues em formato digital via Google Drive compartilhado. O acesso permanece com o cliente ao final do contrato.
+              </p>
+            </motion.div>
+
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={fadeUp}>
+              <div style={{ overflowX: "auto" }}>
+                <table className="deliverables-table">
+                  <thead>
+                    <tr>
+                      <th>Entregável</th>
+                      <th>Descrição</th>
+                      <th>Frequência</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {DELIVERABLES.map((d, i) => (
+                      <tr key={i}>
+                        <td className="td-name">{d.title}</td>
+                        <td>{d.desc}</td>
+                        <td className="td-freq">{d.freq}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ─── PRICING ─── */}
+        <section id="precos" style={{ background: "var(--panel)" }}>
+          <div className="container">
+            <motion.div className="text-center" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
+              <div className="section-kicker">
+                <span className="section-kicker-num">04</span>
+                <span className="section-kicker-line" />
+                <span>Investimento</span>
+              </div>
+              <h2 className="section-title">Pacotes de consultoria</h2>
+              <p className="section-sub">
+                Faturamento mensal via PIX ou boleto. Desconto de 5% para pagamento trimestral antecipado. Reajuste anual pelo IPCA.
+              </p>
+            </motion.div>
+
+            <motion.div className="pricing-grid" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
+              {PRICING.map((p, i) => (
+                <motion.div key={i} className={`pricing-card${p.highlight ? " pricing-card--highlight" : ""}`} variants={fadeUp}>
+                  {p.highlight && <div className="pricing-badge">Mais popular</div>}
+                  <div className="pricing-name">{p.name}</div>
+                  <div className="pricing-price">
+                    <span className="pricing-currency">R$</span>
+                    <span className="pricing-value">{p.price}</span>
+                    <span className="pricing-period">/mês</span>
+                  </div>
+                  <p className="pricing-tagline">{p.tagline}</p>
+                  <ul className="pricing-features">
+                    {p.features.map((f, j) => (
+                      <li key={j} className="pricing-feature">
+                        <div className="pricing-check">
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                        </div>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <a
+                    href={WA_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`btn ${p.highlight ? "btn--primary" : "btn--outline"}`}
+                    style={{ width: "100%", justifyContent: "center", fontSize: 14 }}
+                  >
+                    Contratar {p.name}
+                  </a>
+                  <div className="pricing-contract">{p.contract}</div>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            <motion.div
+              initial="hidden" whileInView="visible" viewport={{ once: true }}
+              variants={fadeUp}
+              style={{ marginTop: 28, background: "rgba(0,119,182,.06)", border: "1px solid rgba(0,119,182,.14)", borderRadius: "var(--radius)", padding: "18px 24px", display: "flex", alignItems: "flex-start", gap: 14 }}
+            >
+              <div style={{ width: 26, height: 26, borderRadius: "50%", background: "rgba(0,119,182,.12)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+              </div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: "var(--ink)", marginBottom: 4 }}>Escopo adicional disponível</div>
+                <div style={{ fontSize: 13, color: "var(--ink-2)" }}>
+                  Automação de processos via NauticTech (cotação separada por projeto), treinamento presencial de equipe e processos adicionais além do pacote contratado.
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ─── DIFFERENTIALS ─── */}
+        <section id="diferenciais">
+          <div className="container">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
+              <div className="section-kicker">
+                <span className="section-kicker-num">05</span>
+                <span className="section-kicker-line" />
+                <span>Por que nós</span>
+              </div>
+              <h2 className="section-title">Nossa diferença</h2>
+              <p className="section-sub">
+                Não apenas mapeamos processos. Entregamos mudança real, acompanhamos os resultados e permanecemos ao lado da sua equipe.
+              </p>
+            </motion.div>
+
+            <motion.div className="diff-grid" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
+              {DIFFERENTIALS.map((d, i) => (
+                <motion.div key={i} className="diff-card" variants={fadeUp}>
+                  <div className="diff-icon">{DIFF_ICONS[i]}</div>
+                  <div className="diff-title">{d.title}</div>
+                  <div className="diff-desc">{d.desc}</div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ─── NEXT STEPS ─── */}
+        <section id="proximos-passos" style={{ background: "var(--panel)" }}>
+          <div className="container" style={{ maxWidth: 780 }}>
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
+              <div className="section-kicker">
+                <span className="section-kicker-num">06</span>
+                <span className="section-kicker-line" />
+                <span>Próximos passos</span>
+              </div>
+              <h2 className="section-title">Como começar</h2>
+              <p className="section-sub">
+                A proposta é válida por 15 dias corridos. Para avançar, basta nos confirmar por WhatsApp. Cuidamos de toda a burocracia.
+              </p>
+            </motion.div>
+
+            <motion.div className="steps-list" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
+              {NEXT_STEPS.map((s, i) => (
+                <motion.div key={i} className="step-item" variants={fadeUp}>
+                  <div className="step-num">{String(i + 1).padStart(2, "0")}</div>
+                  <div>
+                    <div className="step-title">{s.title}</div>
+                    <div className="step-desc">{s.desc}</div>
                   </div>
                 </motion.div>
               ))}
             </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="contato" className={`py-24 transition-colors duration-500 ${darkMode ? 'bg-slate-950' : 'bg-gradient-to-t from-white to-blue-50/50'}`}>
-        <div className="container mx-auto px-6 max-w-5xl">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className={`rounded-[2.5rem] p-8 md:p-16 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] text-center border relative overflow-hidden transition-colors duration-500 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100'}`}
-          >
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-full h-2 bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-500" />
-            
-            <h2 className={`text-3xl md:text-5xl font-bold mb-6 tracking-tight ${textTitle}`}>
-              Pronto para Transformar?
-            </h2>
-            <p className={`text-lg md:text-xl mb-10 max-w-2xl mx-auto ${textMain}`}>
-              Entre em contato conosco hoje. Estamos à disposição para entender as suas necessidades e construir a solução ideal para o seu negócio.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <motion.a 
-                href="https://wa.me/5585936180186"
-                target="_blank"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto px-10 py-5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full font-bold text-lg flex items-center justify-center gap-3 shadow-xl shadow-emerald-500/25 transition-all"
-              >
-                <Phone size={24} /> (85) 98541-0058
-              </motion.a>
-              
-              <motion.a 
-                href="mailto:pvsales33@gmail.com"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`w-full sm:w-auto px-10 py-5 rounded-full font-bold text-lg flex items-center justify-center gap-3 shadow-lg transition-all ${darkMode ? 'bg-slate-800 hover:bg-slate-700 text-white' : 'bg-slate-800 hover:bg-slate-900 text-white'}`}
-              >
-                <Mail size={24} /> Enviar E-mail
-              </motion.a>
-            </div>
-            <div className="mt-8 flex items-center justify-center gap-2 text-sm text-slate-400">
-               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-               Resposta rápida em até 24h úteis
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <footer className={`border-t pt-16 pb-8 transition-colors duration-500 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100'}`}>
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
-            <div className="text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start gap-2 mb-4">
-                <div className="bg-blue-600 text-white p-1.5 rounded-lg">
-                  <Trident size={20} />
+        {/* ─── CTA ─── */}
+        <section className="cta-section" id="contato">
+          <div className="container" style={{ maxWidth: 640 }}>
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
+              <motion.div variants={fadeUp}>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,.12)", borderRadius: 20, padding: "6px 16px", marginBottom: 22 }}>
+                  <span className="mono" style={{ fontSize: 11, color: "rgba(255,255,255,.75)", textTransform: "uppercase", letterSpacing: "1.4px" }}>
+                    Fortaleza, CE · Brasil
+                  </span>
                 </div>
-                <span className={`text-xl font-bold tracking-tight ${textTitle}`}>Nautic Automação</span>
-              </div>
-              <p className={`max-w-sm leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                Automação, integração e dashboards para acelerar a eficiência da sua empresa com tecnologia de ponta.
+              </motion.div>
+              <motion.h2 className="cta-title" variants={fadeUp}>
+                Vamos conversar?
+              </motion.h2>
+              <motion.p className="cta-sub" variants={fadeUp}>
+                Agende uma conversa sem compromisso. Em 30 minutos identificamos se faz sentido e como podemos ajudar sua operação a evoluir.
+              </motion.p>
+              <motion.div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }} variants={fadeUp}>
+                <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--wa btn--lg">
+                  <IconWA /> (85) 98541-0058
+                </a>
+                <a
+                  href="mailto:pvsales33@gmail.com"
+                  className="btn btn--lg"
+                  style={{ background: "rgba(255,255,255,.15)", color: "#fff", border: "1px solid rgba(255,255,255,.25)" }}
+                >
+                  pvsales33@gmail.com
+                </a>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+      </main>
+
+      {/* ─── FOOTER ─── */}
+      <footer className="footer">
+        <div className="container">
+          <div className="footer-grid">
+            <div>
+              <div className="footer-brand-name">NauticTech</div>
+              <div className="footer-brand-sub">Processos & Performance</div>
+              <p className="footer-tagline">
+                Consultoria especializada em gestão de processos, análise de performance e automação operacional. Fortaleza, CE.
               </p>
             </div>
-
-            <div className={`flex gap-8 text-sm font-semibold ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-              <button onClick={() => scrollToSection('#missao')} className="hover:text-blue-500 transition-colors">Missão</button>
-              <button onClick={() => scrollToSection('#servicos')} className="hover:text-blue-500 transition-colors">Serviços</button>
-              <button onClick={() => scrollToSection('#dashboards')} className="hover:text-blue-500 transition-colors">Dashboards</button>
-              <button onClick={() => scrollToSection('#contato')} className="hover:text-blue-500 transition-colors">Contato</button>
-            </div>
+            <nav className="footer-nav">
+              {NAV.map((n) => (
+                <a key={n.href} href={n.href} className="footer-link">{n.label}</a>
+              ))}
+            </nav>
           </div>
-
-          <div className={`border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs ${darkMode ? 'border-slate-800 text-slate-500' : 'border-slate-100 text-slate-400'}`}>
-            <p>© {new Date().getFullYear()} Nautic Automação & Digitalização. Todos os direitos reservados.</p>
-            <p>Desenvolvido com foco em performance.</p>
+          <div className="footer-bottom">
+            <span className="footer-copy">© 2025 NauticTech · Fortaleza, CE</span>
+            <span className="footer-copy">pvsales33@gmail.com</span>
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </>
+  )
 }
