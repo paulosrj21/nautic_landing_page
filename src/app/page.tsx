@@ -5,7 +5,7 @@ import { motion, type Variants } from "framer-motion"
 
 const WA_NUMBER = "5585985410058"
 const WA_MSG = encodeURIComponent(
-  "Olá! Vi o site da NauticTech e gostaria de saber mais sobre a consultoria."
+  "Olá! Vi o site da Nautic e gostaria de saber mais sobre a consultoria."
 )
 const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${WA_MSG}`
 
@@ -168,7 +168,7 @@ const DIFFERENTIALS = [
   },
   {
     title: "Porta para Automação",
-    desc: "Processo bem mapeado vira automação com muito mais velocidade e precisão. Acesso facilitado a projetos de automação via NauticTech.",
+    desc: "Processo bem mapeado vira automação com muito mais velocidade e precisão. Acesso facilitado a projetos de automação via Nautic.",
   },
 ]
 
@@ -286,7 +286,7 @@ export default function Home() {
           </svg>
         </div>
         <div>
-          <div className="brand-name">NauticTech</div>
+          <div className="brand-name">Nautic</div>
           <div className="brand-sub">Processos & Performance</div>
         </div>
 
@@ -323,7 +323,7 @@ export default function Home() {
         <div className="mobile-menu">
           <div className="mobile-menu-header">
             <div>
-              <div className="brand-name">NauticTech</div>
+              <div className="brand-name">Nautic</div>
               <div className="brand-sub">Processos & Performance</div>
             </div>
             <button className="btn btn--ghost" onClick={() => setMenuOpen(false)} aria-label="Fechar menu">
@@ -743,7 +743,7 @@ export default function Home() {
         <div className="container">
           <div className="footer-grid">
             <div>
-              <div className="footer-brand-name">NauticTech</div>
+              <div className="footer-brand-name">Nautic</div>
               <div className="footer-brand-sub">Processos & Performance</div>
               <p className="footer-tagline">
                 Consultoria especializada em gestão de processos, análise de performance e automação operacional. Fortaleza, CE.
@@ -756,7 +756,7 @@ export default function Home() {
             </nav>
           </div>
           <div className="footer-bottom">
-            <span className="footer-copy">© 2025 NauticTech · Fortaleza, CE</span>
+            <span className="footer-copy">© 2025 Nautic · Fortaleza, CE</span>
             <span className="footer-copy">pvsales33@gmail.com</span>
           </div>
         </div>

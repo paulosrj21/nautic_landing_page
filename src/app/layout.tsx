@@ -15,7 +15,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NauticTech | Consultoria em Processos & Performance",
+  title: "Nautic | Consultoria em Processos & Performance",
   description:
     "Consultoria especializada em gestão de processos, análise de performance e automação operacional. Transformamos processos em vantagem competitiva.",
 };
