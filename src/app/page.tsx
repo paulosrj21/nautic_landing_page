@@ -195,6 +195,39 @@ const NEXT_STEPS = [
   },
 ]
 
+const AI_FEATURES = [
+  {
+    icon: <svg key="af0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48cae4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="18" y="3" width="4" height="18"/><rect x="10" y="8" width="4" height="13"/><rect x="2" y="13" width="4" height="8"/></svg>,
+    title: "Relatórios automáticos",
+    desc: "Dashboards e PDFs entregues por e-mail ou WhatsApp sem trabalho manual.",
+  },
+  {
+    icon: <svg key="af1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48cae4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>,
+    title: "Agentes de IA para atendimento",
+    desc: "Triagem e resposta automática a clientes com linguagem natural.",
+  },
+  {
+    icon: <svg key="af2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48cae4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+    title: "Integração entre sistemas",
+    desc: "CRM, ERP, planilhas e APIs conectados sem fricção.",
+  },
+  {
+    icon: <svg key="af3" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48cae4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+    title: "Automação de follow-up",
+    desc: "Sequências de mensagens e alertas sem intervenção manual.",
+  },
+  {
+    icon: <svg key="af4" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48cae4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>,
+    title: "Processamento de documentos",
+    desc: "Extração de dados em contratos, NFes e formulários com IA.",
+  },
+  {
+    icon: <svg key="af5" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48cae4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+    title: "Fluxos n8n · Make · Python",
+    desc: "Orquestração entre dezenas de ferramentas sem código manual.",
+  },
+]
+
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 18 },
   visible: {
@@ -316,7 +349,10 @@ export default function Home() {
       <main>
         {/* ─── HERO ─── */}
         <section className="hero" id="inicio">
-          <div className="hero-bg" />
+          <video className="hero-video" autoPlay loop muted playsInline>
+            <source src="/hero-video.mp4" type="video/mp4" />
+          </video>
+          <div className="hero-overlay" />
           <div className="container">
             <div className="hero-grid">
 
@@ -572,19 +608,40 @@ export default function Home() {
             </motion.div>
 
             <motion.div
+              className="ai-card"
               initial="hidden" whileInView="visible" viewport={{ once: true }}
               variants={fadeUp}
-              style={{ marginTop: 28, background: "rgba(0,119,182,.06)", border: "1px solid rgba(0,119,182,.14)", borderRadius: "var(--radius)", padding: "18px 24px", display: "flex", alignItems: "flex-start", gap: 14 }}
             >
-              <div style={{ width: 26, height: 26, borderRadius: "50%", background: "rgba(0,119,182,.12)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
-                </svg>
-              </div>
-              <div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: "var(--ink)", marginBottom: 4 }}>Escopo adicional disponível</div>
-                <div style={{ fontSize: 13, color: "var(--ink-2)" }}>
-                  Automação de processos via NauticTech (cotação separada por projeto), treinamento presencial de equipe e processos adicionais além do pacote contratado.
+              <div className="ai-card-inner">
+                <div className="ai-card-left">
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+                    <span className="ai-badge">IA</span>
+                    <span className="ai-name">Automação com IA</span>
+                  </div>
+                  <div className="ai-price">
+                    A orçar
+                    <span className="ai-price-sub">por projeto</span>
+                  </div>
+                  <p className="ai-tagline">
+                    Nenhum pacote fechado — cada projeto é mapeado do zero. Identificamos onde a IA pode eliminar trabalho manual e entregamos a solução certa para sua operação.
+                  </p>
+                  <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--primary btn--lg">
+                    <IconWA /> Solicitar orçamento
+                  </a>
+                </div>
+                <div className="ai-card-right">
+                  <div className="ai-features-label">O que pode ser automatizado</div>
+                  <div className="ai-features-grid">
+                    {AI_FEATURES.map((f, i) => (
+                      <div key={i} className="ai-feature-item">
+                        <div className="ai-feature-icon">{f.icon}</div>
+                        <div>
+                          <div className="ai-feature-title">{f.title}</div>
+                          <div className="ai-feature-desc">{f.desc}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </motion.div>
