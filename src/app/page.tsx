@@ -2,8 +2,25 @@
 
 import { useState, useEffect } from "react"
 import { motion, type Variants } from "framer-motion"
+import {
+  Stack,
+  ChartLineUp,
+  MapPin,
+  SquaresFour,
+  Lightning,
+  List,
+  X,
+  Check,
+  ArrowUpRight,
+  ChartBar,
+  Robot,
+  ArrowsLeftRight,
+  ChatCircle,
+  FileText,
+  ArrowRight,
+} from "@phosphor-icons/react"
 
-const WA_NUMBER = "5585985410058"
+const WA_NUMBER = "5585936180186"
 const WA_MSG = encodeURIComponent(
   "Olá! Vi o site da Nautic e gostaria de saber mais sobre a consultoria."
 )
@@ -12,24 +29,40 @@ const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${WA_MSG}`
 const NAV = [
   { label: "Metodologia", href: "#metodologia" },
   { label: "Serviços", href: "#entregaveis" },
+  { label: "Cases", href: "#cases" },
   { label: "Preços", href: "#precos" },
   { label: "Por que nós", href: "#diferenciais" },
 ]
 
+const TICKER = [
+  "Gestão de Processos",
+  "BPM · BPMN",
+  "Automação com IA",
+  "Power BI",
+  "Performance Operacional",
+  "n8n · Make · Python",
+  "Mapeamento AS-IS · TO-BE",
+  "Escritório de Processos",
+]
+
 const PAIN_POINTS = [
   {
+    num: "01",
     title: "Processos sem padronização",
     desc: "Retrabalho constante, inconsistências entre times e dependência de pessoas que concentram o conhecimento.",
   },
   {
+    num: "02",
     title: "Sem visibilidade de performance",
     desc: "Ausência de indicadores operacionais. Gestão no feeling, sem dados para embasar decisões estratégicas.",
   },
   {
+    num: "03",
     title: "Gargalos operacionais",
     desc: "Etapas que travam o fluxo de trabalho causando atrasos, perdas de prazo e frustração de clientes.",
   },
   {
+    num: "04",
     title: "Equipe sobrecarregada",
     desc: "Time executando tarefas manuais e repetitivas que poderiam ser automatizadas — energia drenada do estratégico.",
   },
@@ -151,24 +184,83 @@ const PRICING = [
 
 const DIFFERENTIALS = [
   {
+    icon: <Stack size={22} weight="light" />,
     title: "Perfil Híbrido",
     desc: "Combinamos BPM/BPMN e consultoria de performance. Não apenas mapeamos processos — entendemos como impactam receita, custo e pessoas.",
   },
   {
+    icon: <ChartLineUp size={22} weight="light" />,
     title: "Foco em Resultado",
     desc: "Definimos indicadores de sucesso antes de começar e acompanhamos até o cliente sentir a mudança real na operação.",
   },
   {
+    icon: <MapPin size={22} weight="light" />,
     title: "Proximidade Local",
     desc: "Atendemos Fortaleza e região com disponibilidade para reuniões presenciais. A relação é de parceria, não de fornecedor remoto.",
   },
   {
+    icon: <SquaresFour size={22} weight="light" />,
     title: "Metodologia Clara",
     desc: "Usamos BPMN para modelagem, mas entregamos para o negócio — sem jargão. Diagramas e relatórios sempre compreensíveis para gestores.",
   },
   {
+    icon: <Lightning size={22} weight="light" />,
     title: "Porta para Automação",
     desc: "Processo bem mapeado vira automação com muito mais velocidade e precisão. Acesso facilitado a projetos de automação via Nautic.",
+  },
+]
+
+const AI_FEATURES = [
+  {
+    icon: <ChartBar size={15} weight="light" />,
+    title: "Relatórios automáticos",
+    desc: "Dashboards e PDFs entregues por e-mail ou WhatsApp sem trabalho manual.",
+  },
+  {
+    icon: <Robot size={15} weight="light" />,
+    title: "Agentes de IA para atendimento",
+    desc: "Triagem e resposta automática a clientes com linguagem natural.",
+  },
+  {
+    icon: <ArrowsLeftRight size={15} weight="light" />,
+    title: "Integração entre sistemas",
+    desc: "CRM, ERP, planilhas e APIs conectados sem fricção.",
+  },
+  {
+    icon: <ChatCircle size={15} weight="light" />,
+    title: "Automação de follow-up",
+    desc: "Sequências de mensagens e alertas sem intervenção manual.",
+  },
+  {
+    icon: <FileText size={15} weight="light" />,
+    title: "Processamento de documentos",
+    desc: "Extração de dados em contratos, NFes e formulários com IA.",
+  },
+  {
+    icon: <Lightning size={15} weight="light" />,
+    title: "Fluxos n8n · Make · Python",
+    desc: "Orquestração entre dezenas de ferramentas sem código manual.",
+  },
+]
+
+const CASES = [
+  {
+    sector: "Escritório de Contabilidade",
+    result: "95%",
+    resultLabel: "redução no tempo de escrituração de NFs",
+    desc: "Lançamento manual de ~800 notas/mês com alto risco de divergências. Automatizamos a escrituração no ERP com validação e relatórios de inconsistências.",
+  },
+  {
+    sector: "Transportadora Regional",
+    result: "R$48k",
+    resultLabel: "em multas prevenidas no 1º trimestre",
+    desc: "Frota com 60+ veículos sem visibilidade de infrações. Monitoramento automático com alertas diários eliminando passivos não contabilizados.",
+  },
+  {
+    sector: "Holding com 4 Filiais",
+    result: "4h",
+    resultLabel: "para fechar o mês — antes eram 3 dias",
+    desc: "DRE consolidada manualmente em Excel entre filiais. Dashboard Power BI com atualização automática e drill-down por filial.",
   },
 ]
 
@@ -195,51 +287,18 @@ const NEXT_STEPS = [
   },
 ]
 
-const AI_FEATURES = [
-  {
-    icon: <svg key="af0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48cae4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="18" y="3" width="4" height="18"/><rect x="10" y="8" width="4" height="13"/><rect x="2" y="13" width="4" height="8"/></svg>,
-    title: "Relatórios automáticos",
-    desc: "Dashboards e PDFs entregues por e-mail ou WhatsApp sem trabalho manual.",
-  },
-  {
-    icon: <svg key="af1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48cae4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>,
-    title: "Agentes de IA para atendimento",
-    desc: "Triagem e resposta automática a clientes com linguagem natural.",
-  },
-  {
-    icon: <svg key="af2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48cae4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
-    title: "Integração entre sistemas",
-    desc: "CRM, ERP, planilhas e APIs conectados sem fricção.",
-  },
-  {
-    icon: <svg key="af3" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48cae4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
-    title: "Automação de follow-up",
-    desc: "Sequências de mensagens e alertas sem intervenção manual.",
-  },
-  {
-    icon: <svg key="af4" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48cae4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>,
-    title: "Processamento de documentos",
-    desc: "Extração de dados em contratos, NFes e formulários com IA.",
-  },
-  {
-    icon: <svg key="af5" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#48cae4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-    title: "Fluxos n8n · Make · Python",
-    desc: "Orquestração entre dezenas de ferramentas sem código manual.",
-  },
-]
-
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.48, ease: [0.2, 0.7, 0.2, 1] as [number, number, number, number] },
+    transition: { duration: 0.52, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
   },
 }
 
 const stagger: Variants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.07 } },
+  visible: { transition: { staggerChildren: 0.08 } },
 }
 
 function IconWA() {
@@ -251,18 +310,22 @@ function IconWA() {
   )
 }
 
-const DIFF_ICONS = [
-  // Layers
-  <svg key={0} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>,
-  // Trend
-  <svg key={1} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
-  // Pin
-  <svg key={2} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>,
-  // Grid
-  <svg key={3} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>,
-  // Bolt
-  <svg key={4} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-]
+function TickerStrip() {
+  const doubled = [...TICKER, ...TICKER]
+  return (
+    <div className="ticker-wrap" aria-hidden="true">
+      <div className="ticker-track">
+        {doubled.map((t, i) => (
+          <span key={i} className="ticker-item">
+            {t}
+            <span className="ticker-diamond">◆</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -279,11 +342,7 @@ export default function Home() {
       {/* ─── TOPBAR ─── */}
       <header className={`topbar${scrolled ? " scrolled" : ""}`}>
         <div className="brand-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-            <path d="M2 17l10 5 10-5" />
-            <path d="M2 12l10 5 10-5" />
-          </svg>
+          <Stack size={18} color="#fff" weight="regular" />
         </div>
         <div>
           <div className="brand-name">Nautic</div>
@@ -310,11 +369,7 @@ export default function Home() {
           aria-label="Abrir menu"
           style={{ padding: "8px 10px" }}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
+          <List size={22} weight="regular" />
         </button>
       </header>
 
@@ -327,10 +382,7 @@ export default function Home() {
               <div className="brand-sub">Processos & Performance</div>
             </div>
             <button className="btn btn--ghost" onClick={() => setMenuOpen(false)} aria-label="Fechar menu">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
+              <X size={22} weight="regular" />
             </button>
           </div>
           {NAV.map((n) => (
@@ -340,7 +392,7 @@ export default function Home() {
           ))}
           <div className="mobile-cta">
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--wa btn--lg" style={{ width: "100%", justifyContent: "center" }}>
-              <IconWA /> (85) 98541-0058
+              <IconWA /> (85) 93618-0186
             </a>
           </div>
         </div>
@@ -358,24 +410,24 @@ export default function Home() {
 
               {/* Left */}
               <motion.div initial="hidden" animate="visible" variants={stagger}>
-                <motion.div variants={fadeUp}>
-                  <div className="hero-tag">
-                    <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4" /></svg>
-                    Consultoria · Fortaleza, CE
-                  </div>
-                </motion.div>
+                <motion.p className="hero-eyebrow" variants={fadeUp}>
+                  Consultoria · Fortaleza, CE
+                </motion.p>
                 <motion.h1 className="hero-title" variants={fadeUp}>
-                  Transformamos<br />processos em<br /><span>vantagem</span><br />competitiva.
+                  Transformamos<br />
+                  processos em<br />
+                  <em className="display-serif">vantagem</em><br />
+                  competitiva.
                 </motion.h1>
                 <motion.p className="hero-subtitle" variants={fadeUp}>
-                  Consultoria especializada em gestão de processos, análise de performance e automação. Seu time foca no estratégico — a operação evolui.
+                  Especialistas em gestão de processos, análise de performance e automação. Seu time foca no estratégico — a operação evolui.
                 </motion.p>
                 <motion.div className="hero-actions" variants={fadeUp}>
                   <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--wa btn--lg">
                     <IconWA /> Quero uma proposta
                   </a>
-                  <a href="#metodologia" className="btn btn--outline btn--lg">
-                    Ver metodologia
+                  <a href="#metodologia" className="btn btn--ghost-light btn--lg">
+                    Ver metodologia <ArrowRight size={16} weight="regular" />
                   </a>
                 </motion.div>
               </motion.div>
@@ -385,16 +437,9 @@ export default function Home() {
                 className="hero-card-wrap"
                 initial={{ opacity: 0, x: 28 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.18, ease: [0.2, 0.7, 0.2, 1] }}
+                transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div className="hero-floating">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2ea368" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                  TO-BE validado
-                </div>
-
-                <div className="hero-card">
+                <div className="hero-card" style={{ position: "relative" }}>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
                     <span className="mono" style={{ fontSize: 11, color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "1.4px" }}>
                       Processo ativo
@@ -439,52 +484,43 @@ export default function Home() {
                     <span className="mono" style={{ fontSize: 13, color: "var(--primary)", fontWeight: 600 }}>12</span>
                   </div>
                 </div>
-
-                <div className="hero-card-mini">
-                  <div style={{ width: 28, height: 28, borderRadius: "50%", background: "rgba(46,163,104,.12)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2ea368" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 500, color: "var(--ink)" }}>
-                      Ganho de <strong>7 dias</strong> no ciclo documentado
-                    </div>
-                    <div className="mono" style={{ fontSize: 10, color: "var(--ink-3)", marginTop: 2, textTransform: "uppercase", letterSpacing: "0.8px" }}>
-                      Entregável TO-BE aprovado
-                    </div>
-                  </div>
-                </div>
               </motion.div>
             </div>
-
           </div>
         </section>
 
-        {/* ─── PAIN POINTS ─── */}
-        <section id="dores">
-          <div className="container">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
-              <div className="section-kicker">
-                <span className="section-kicker-num">01</span>
-                <span className="section-kicker-line" />
-                <span>Contexto</span>
-              </div>
-              <h2 className="section-title">Esses cenários<br />são familiares?</h2>
-              <p className="section-sub">
-                Trabalhamos com empresas que sentem esses problemas diariamente. A boa notícia: todos têm solução estruturada.
-              </p>
-            </motion.div>
+        {/* ─── TICKER ─── */}
+        <TickerStrip />
 
-            <motion.div className="pain-grid" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
-              {PAIN_POINTS.map((p, i) => (
-                <motion.div key={i} className="pain-card" variants={fadeUp}>
-                  <div className="pain-num">0{i + 1}</div>
-                  <div className="pain-title">{p.title}</div>
-                  <div className="pain-desc">{p.desc}</div>
-                </motion.div>
-              ))}
-            </motion.div>
+        {/* ─── PAIN POINTS ─── */}
+        <section id="dores" className="pain-section">
+          <div className="container">
+            <div className="pain-layout">
+              <motion.div className="pain-left" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
+                <h2 className="section-title">
+                  <em className="display-serif">Esses cenários</em><br />
+                  são familiares?
+                </h2>
+                <p className="section-sub">
+                  Trabalhamos com empresas que sentem esses problemas diariamente. A boa notícia: todos têm solução estruturada.
+                </p>
+                <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--outline btn--lg" style={{ marginTop: 32, alignSelf: "flex-start" }}>
+                  Vamos resolver <ArrowUpRight size={16} weight="regular" />
+                </a>
+              </motion.div>
+
+              <motion.div className="pain-right" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
+                {PAIN_POINTS.map((p, i) => (
+                  <motion.div key={i} className="pain-row" variants={fadeUp}>
+                    <span className="pain-row-num">{p.num}</span>
+                    <div>
+                      <div className="pain-row-title">{p.title}</div>
+                      <div className="pain-row-desc">{p.desc}</div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
           </div>
         </section>
 
@@ -492,12 +528,9 @@ export default function Home() {
         <section id="metodologia" className="methodology-section">
           <div className="container">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
-              <div className="section-kicker">
-                <span className="section-kicker-num">02</span>
-                <span className="section-kicker-line" />
-                <span>Metodologia</span>
-              </div>
-              <h2 className="section-title">Como trabalhamos</h2>
+              <h2 className="section-title">
+                <em className="display-serif">Como</em> trabalhamos
+              </h2>
               <p className="section-sub">
                 Uma sequência estruturada que garante profundidade no diagnóstico, clareza no redesenho e aderência na implementação — com o time do cliente como protagonista.
               </p>
@@ -519,12 +552,9 @@ export default function Home() {
         <section id="entregaveis">
           <div className="container">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
-              <div className="section-kicker">
-                <span className="section-kicker-num">03</span>
-                <span className="section-kicker-line" />
-                <span>Entregáveis</span>
-              </div>
-              <h2 className="section-title">O que você recebe</h2>
+              <h2 className="section-title">
+                O que você <em className="display-serif">recebe</em>
+              </h2>
               <p className="section-sub">
                 Todos os documentos são entregues em formato digital via Google Drive compartilhado. O acesso permanece com o cliente ao final do contrato.
               </p>
@@ -559,12 +589,9 @@ export default function Home() {
         <section id="precos" style={{ background: "var(--panel)" }}>
           <div className="container">
             <motion.div className="text-center" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
-              <div className="section-kicker">
-                <span className="section-kicker-num">04</span>
-                <span className="section-kicker-line" />
-                <span>Investimento</span>
-              </div>
-              <h2 className="section-title">Pacotes de consultoria</h2>
+              <h2 className="section-title">
+                Pacotes de <em className="display-serif">consultoria</em>
+              </h2>
               <p className="section-sub">
                 Faturamento mensal via PIX ou boleto. Desconto de 5% para pagamento trimestral antecipado. Reajuste anual pelo IPCA.
               </p>
@@ -585,9 +612,7 @@ export default function Home() {
                     {p.features.map((f, j) => (
                       <li key={j} className="pricing-feature">
                         <div className="pricing-check">
-                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="20 6 9 17 4 12" />
-                          </svg>
+                          <Check size={10} weight="bold" color="var(--primary)" />
                         </div>
                         {f}
                       </li>
@@ -615,7 +640,6 @@ export default function Home() {
               <div className="ai-card-inner">
                 <div className="ai-card-left">
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                    <span className="ai-badge">IA</span>
                     <span className="ai-name">Automação com IA</span>
                   </div>
                   <div className="ai-price">
@@ -651,24 +675,54 @@ export default function Home() {
         {/* ─── DIFFERENTIALS ─── */}
         <section id="diferenciais">
           <div className="container">
+            <div className="diff-layout">
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
+                <h2 className="section-title">
+                  Nossa <em className="display-serif">diferença</em>
+                </h2>
+                <p className="section-sub">
+                  Não apenas mapeamos processos. Entregamos mudança real, acompanhamos os resultados e permanecemos ao lado da sua equipe.
+                </p>
+              </motion.div>
+
+              <motion.div className="diff-list" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
+                {DIFFERENTIALS.map((d, i) => (
+                  <motion.div key={i} className="diff-row" variants={fadeUp}>
+                    <div className="diff-row-icon">{d.icon}</div>
+                    <div className="diff-row-content">
+                      <div className="diff-row-title">{d.title}</div>
+                      <div className="diff-row-desc">{d.desc}</div>
+                    </div>
+                    <div className="diff-row-arrow">
+                      <ArrowUpRight size={16} weight="regular" />
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* ─── CASES ─── */}
+        <section id="cases" className="cases-section">
+          <div className="container">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
-              <div className="section-kicker">
-                <span className="section-kicker-num">05</span>
-                <span className="section-kicker-line" />
-                <span>Por que nós</span>
-              </div>
-              <h2 className="section-title">Nossa diferença</h2>
+              <h2 className="section-title">
+                <em className="display-serif">Impacto real,</em><br />
+                números que falam.
+              </h2>
               <p className="section-sub">
-                Não apenas mapeamos processos. Entregamos mudança real, acompanhamos os resultados e permanecemos ao lado da sua equipe.
+                Projetos entregues em escritórios contábeis e empresas que precisavam sair do Excel e ganhar controle de verdade.
               </p>
             </motion.div>
 
-            <motion.div className="diff-grid" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
-              {DIFFERENTIALS.map((d, i) => (
-                <motion.div key={i} className="diff-card" variants={fadeUp}>
-                  <div className="diff-icon">{DIFF_ICONS[i]}</div>
-                  <div className="diff-title">{d.title}</div>
-                  <div className="diff-desc">{d.desc}</div>
+            <motion.div className="cases-grid" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
+              {CASES.map((c, i) => (
+                <motion.div key={i} className="case-card" variants={fadeUp}>
+                  <div className="case-sector">{c.sector}</div>
+                  <div className="case-metric-value">{c.result}</div>
+                  <div className="case-metric-label">{c.resultLabel}</div>
+                  <p className="case-desc">{c.desc}</p>
                 </motion.div>
               ))}
             </motion.div>
@@ -679,12 +733,9 @@ export default function Home() {
         <section id="proximos-passos" style={{ background: "var(--panel)" }}>
           <div className="container" style={{ maxWidth: 780 }}>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
-              <div className="section-kicker">
-                <span className="section-kicker-num">06</span>
-                <span className="section-kicker-line" />
-                <span>Próximos passos</span>
-              </div>
-              <h2 className="section-title">Como começar</h2>
+              <h2 className="section-title">
+                <em className="display-serif">Como</em> começar
+              </h2>
               <p className="section-sub">
                 A proposta é válida por 15 dias corridos. Para avançar, basta nos confirmar por WhatsApp. Cuidamos de toda a burocracia.
               </p>
@@ -708,22 +759,15 @@ export default function Home() {
         <section className="cta-section" id="contato">
           <div className="container" style={{ maxWidth: 640 }}>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
-              <motion.div variants={fadeUp}>
-                <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,.12)", borderRadius: 20, padding: "6px 16px", marginBottom: 22 }}>
-                  <span className="mono" style={{ fontSize: 11, color: "rgba(255,255,255,.75)", textTransform: "uppercase", letterSpacing: "1.4px" }}>
-                    Fortaleza, CE · Brasil
-                  </span>
-                </div>
-              </motion.div>
               <motion.h2 className="cta-title" variants={fadeUp}>
-                Vamos conversar?
+                <em className="display-serif cta-serif">Vamos</em> conversar?
               </motion.h2>
               <motion.p className="cta-sub" variants={fadeUp}>
                 Agende uma conversa sem compromisso. Em 30 minutos identificamos se faz sentido e como podemos ajudar sua operação a evoluir.
               </motion.p>
               <motion.div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }} variants={fadeUp}>
                 <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--wa btn--lg">
-                  <IconWA /> (85) 98541-0058
+                  <IconWA /> (85) 93618-0186
                 </a>
                 <a
                   href="mailto:pvsales33@gmail.com"
