@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { motion, type Variants } from "framer-motion"
 import {
   Stack,
@@ -11,13 +11,12 @@ import {
   List,
   X,
   Check,
-  ArrowUpRight,
+  CaretRight,
   ChartBar,
   Robot,
   ArrowsLeftRight,
   ChatCircle,
   FileText,
-  ArrowRight,
 } from "@phosphor-icons/react"
 
 const WA_NUMBER = "5585936180186"
@@ -212,32 +211,32 @@ const DIFFERENTIALS = [
 
 const AI_FEATURES = [
   {
-    icon: <ChartBar size={15} weight="light" />,
+    icon: <ChartBar size={20} weight="light" />,
     title: "Relatórios automáticos",
     desc: "Dashboards e PDFs entregues por e-mail ou WhatsApp sem trabalho manual.",
   },
   {
-    icon: <Robot size={15} weight="light" />,
+    icon: <Robot size={20} weight="light" />,
     title: "Agentes de IA para atendimento",
     desc: "Triagem e resposta automática a clientes com linguagem natural.",
   },
   {
-    icon: <ArrowsLeftRight size={15} weight="light" />,
+    icon: <ArrowsLeftRight size={20} weight="light" />,
     title: "Integração entre sistemas",
     desc: "CRM, ERP, planilhas e APIs conectados sem fricção.",
   },
   {
-    icon: <ChatCircle size={15} weight="light" />,
+    icon: <ChatCircle size={20} weight="light" />,
     title: "Automação de follow-up",
     desc: "Sequências de mensagens e alertas sem intervenção manual.",
   },
   {
-    icon: <FileText size={15} weight="light" />,
+    icon: <FileText size={20} weight="light" />,
     title: "Processamento de documentos",
     desc: "Extração de dados em contratos, NFes e formulários com IA.",
   },
   {
-    icon: <Lightning size={15} weight="light" />,
+    icon: <Lightning size={20} weight="light" />,
     title: "Fluxos n8n · Make · Python",
     desc: "Orquestração entre dezenas de ferramentas sem código manual.",
   },
@@ -310,37 +309,33 @@ function IconWA() {
   )
 }
 
-function TickerStrip() {
-  const doubled = [...TICKER, ...TICKER]
+function ServiceRail() {
   return (
-    <div className="ticker-wrap" aria-hidden="true">
-      <div className="ticker-track">
-        {doubled.map((t, i) => (
-          <span key={i} className="ticker-item">
-            {t}
-            <span className="ticker-diamond">◆</span>
-          </span>
-        ))}
+    <div className="rail" aria-label="Áreas de atuação">
+      <div className="container">
+        <div className="rail-list">
+          {TICKER.map((t) => (
+            <span key={t} className="rail-item">{t}</span>
+          ))}
+        </div>
       </div>
     </div>
   )
 }
 
+const inView = {
+  initial: "hidden",
+  whileInView: "visible",
+  viewport: { once: true, margin: "-60px" },
+} as const
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 20)
-    window.addEventListener("scroll", handler, { passive: true })
-    return () => window.removeEventListener("scroll", handler)
-  }, [])
 
   return (
     <>
       {/* ─── TOPBAR ─── */}
-      <header className={`topbar${scrolled ? " scrolled" : ""}`}>
+      <header className="topbar">
         <div className="brand-icon">
           <Stack size={18} color="#fff" weight="regular" />
         </div>
@@ -359,7 +354,7 @@ export default function Home() {
 
         <div className="topbar-ml" />
 
-        <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--wa hidden-mobile">
+        <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--primary hidden-mobile">
           <IconWA /> Falar no WhatsApp
         </a>
 
@@ -367,9 +362,8 @@ export default function Home() {
           className="btn btn--ghost show-mobile"
           onClick={() => setMenuOpen(true)}
           aria-label="Abrir menu"
-          style={{ padding: "8px 10px" }}
         >
-          <List size={22} weight="regular" />
+          <List size={24} weight="light" />
         </button>
       </header>
 
@@ -382,7 +376,7 @@ export default function Home() {
               <div className="brand-sub">Processos & Performance</div>
             </div>
             <button className="btn btn--ghost" onClick={() => setMenuOpen(false)} aria-label="Fechar menu">
-              <X size={22} weight="regular" />
+              <X size={24} weight="light" />
             </button>
           </div>
           {NAV.map((n) => (
@@ -391,7 +385,7 @@ export default function Home() {
             </a>
           ))}
           <div className="mobile-cta">
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--wa btn--lg" style={{ width: "100%", justifyContent: "center" }}>
+            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--primary btn--lg" style={{ width: "100%" }}>
               <IconWA /> (85) 93618-0186
             </a>
           </div>
@@ -401,87 +395,64 @@ export default function Home() {
       <main>
         {/* ─── HERO ─── */}
         <section className="hero" id="inicio">
-          <video className="hero-video" autoPlay loop muted playsInline>
-            <source src="/hero-video.mp4" type="video/mp4" />
-          </video>
-          <div className="hero-overlay" />
           <div className="container">
             <div className="hero-grid">
 
-              {/* Left */}
               <motion.div initial="hidden" animate="visible" variants={stagger}>
-                <motion.p className="hero-eyebrow" variants={fadeUp}>
-                  Consultoria · Fortaleza, CE
-                </motion.p>
                 <motion.h1 className="hero-title" variants={fadeUp}>
-                  Transformamos<br />
-                  processos em<br />
-                  <em className="display-serif">vantagem</em><br />
-                  competitiva.
+                  Transformamos processos em vantagem competitiva.
                 </motion.h1>
                 <motion.p className="hero-subtitle" variants={fadeUp}>
                   Especialistas em gestão de processos, análise de performance e automação. Seu time foca no estratégico — a operação evolui.
                 </motion.p>
                 <motion.div className="hero-actions" variants={fadeUp}>
-                  <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--wa btn--lg">
+                  <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--primary btn--lg">
                     <IconWA /> Quero uma proposta
                   </a>
-                  <a href="#metodologia" className="btn btn--ghost-light btn--lg">
-                    Ver metodologia <ArrowRight size={16} weight="regular" />
+                  <a href="#metodologia" className="btn btn--outline btn--lg">
+                    Ver metodologia <CaretRight size={14} weight="regular" />
                   </a>
                 </motion.div>
               </motion.div>
 
-              {/* Right — process mockup */}
               <motion.div
-                className="hero-card-wrap"
-                initial={{ opacity: 0, x: 28 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div className="hero-card" style={{ position: "relative" }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-                    <span className="mono" style={{ fontSize: 11, color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "1.4px" }}>
-                      Processo ativo
-                    </span>
-                    <span className="badge badge--info">Em andamento</span>
+                <div className="hero-card">
+                  <div className="hc-head">
+                    <span className="hc-label">Processo ativo</span>
+                    <span className="badge">Em andamento</span>
                   </div>
 
-                  <div style={{ fontSize: 16, fontWeight: 600, color: "var(--ink)", marginBottom: 4 }}>
-                    Onboarding de Clientes
+                  <div className="hc-title">Onboarding de Clientes</div>
+                  <div className="hc-sub">Fase 03/06 — Análise de GAP</div>
+
+                  <div className="hc-progress-row">
+                    <span>Progresso</span>
+                    <b>58%</b>
                   </div>
-                  <div style={{ fontSize: 13, color: "var(--ink-2)", marginBottom: 14 }}>
-                    <span className="mono">Fase 03/06</span> — Análise de GAP
+                  <div className="progress-track">
+                    <div className="progress-fill" style={{ width: "58%" }} />
                   </div>
 
-                  <div style={{ marginBottom: 16 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                      <span className="mono" style={{ fontSize: 11, color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "1px" }}>Progresso</span>
-                      <span className="mono" style={{ fontSize: 12, color: "var(--primary)", fontWeight: 500 }}>58%</span>
-                    </div>
-                    <div className="progress-track">
-                      <div className="progress-fill" style={{ width: "58%", background: "var(--primary)" }} />
-                    </div>
-                  </div>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
+                  <div className="hc-metrics">
                     {[
                       { label: "Tempo de ciclo", value: "10d → 3d", note: "-70% estimado" },
                       { label: "Retrabalho", value: "-42%", note: "vs. AS-IS" },
                     ].map((s) => (
-                      <div key={s.label} style={{ background: "var(--panel-2)", borderRadius: "var(--radius-sm)", padding: "12px 14px" }}>
-                        <div className="mono" style={{ fontSize: 10, color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "1px", marginBottom: 6 }}>
-                          {s.label}
-                        </div>
-                        <div style={{ fontSize: 18, fontWeight: 600, color: "var(--ink)", letterSpacing: "-0.5px" }}>{s.value}</div>
-                        <div style={{ fontSize: 11, color: "var(--success)", marginTop: 2 }}>{s.note}</div>
+                      <div key={s.label} className="hc-metric">
+                        <div className="hc-metric-label">{s.label}</div>
+                        <div className="hc-metric-value">{s.value}</div>
+                        <div className="hc-metric-note">{s.note}</div>
                       </div>
                     ))}
                   </div>
 
-                  <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 12, borderTop: "1px solid var(--line)" }}>
-                    <span style={{ fontSize: 13, color: "var(--ink-2)" }}>KPIs ativos</span>
-                    <span className="mono" style={{ fontSize: 13, color: "var(--primary)", fontWeight: 600 }}>12</span>
+                  <div className="hc-foot">
+                    <span>KPIs ativos</span>
+                    <b>12</b>
                   </div>
                 </div>
               </motion.div>
@@ -489,33 +460,30 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ─── TICKER ─── */}
-        <TickerStrip />
+        <ServiceRail />
 
         {/* ─── PAIN POINTS ─── */}
-        <section id="dores" className="pain-section">
+        <section id="dores">
           <div className="container">
-            <div className="pain-layout">
-              <motion.div className="pain-left" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
-                <h2 className="section-title">
-                  <em className="display-serif">Esses cenários</em><br />
-                  são familiares?
-                </h2>
+            <div className="split">
+              <motion.div className="split-left" {...inView} variants={fadeUp}>
+                <div className="section-label">Desafios</div>
+                <h2 className="section-title">Esses cenários são familiares?</h2>
                 <p className="section-sub">
                   Trabalhamos com empresas que sentem esses problemas diariamente. A boa notícia: todos têm solução estruturada.
                 </p>
-                <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--outline btn--lg" style={{ marginTop: 32, alignSelf: "flex-start" }}>
-                  Vamos resolver <ArrowUpRight size={16} weight="regular" />
+                <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="link-chevron">
+                  Vamos resolver <CaretRight size={14} weight="regular" />
                 </a>
               </motion.div>
 
-              <motion.div className="pain-right" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
+              <motion.div className="rows" {...inView} variants={stagger}>
                 {PAIN_POINTS.map((p, i) => (
-                  <motion.div key={i} className="pain-row" variants={fadeUp}>
-                    <span className="pain-row-num">{p.num}</span>
-                    <div>
-                      <div className="pain-row-title">{p.title}</div>
-                      <div className="pain-row-desc">{p.desc}</div>
+                  <motion.div key={i} className="row" variants={fadeUp}>
+                    <span className="row-num">{p.num}</span>
+                    <div className="row-body">
+                      <div className="row-title">{p.title}</div>
+                      <div className="row-desc">{p.desc}</div>
                     </div>
                   </motion.div>
                 ))}
@@ -525,18 +493,17 @@ export default function Home() {
         </section>
 
         {/* ─── METHODOLOGY ─── */}
-        <section id="metodologia" className="methodology-section">
+        <section id="metodologia">
           <div className="container">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
-              <h2 className="section-title">
-                <em className="display-serif">Como</em> trabalhamos
-              </h2>
+            <motion.div {...inView} variants={fadeUp}>
+              <div className="section-label">Metodologia</div>
+              <h2 className="section-title">Como trabalhamos</h2>
               <p className="section-sub">
                 Uma sequência estruturada que garante profundidade no diagnóstico, clareza no redesenho e aderência na implementação — com o time do cliente como protagonista.
               </p>
             </motion.div>
 
-            <motion.div className="methodology-grid" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
+            <motion.div className="method-grid" {...inView} variants={stagger}>
               {METHODOLOGY.map((m, i) => (
                 <motion.div key={i} className="method-step" variants={fadeUp}>
                   <div className="method-num">{m.num}</div>
@@ -551,16 +518,15 @@ export default function Home() {
         {/* ─── DELIVERABLES ─── */}
         <section id="entregaveis">
           <div className="container">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
-              <h2 className="section-title">
-                O que você <em className="display-serif">recebe</em>
-              </h2>
+            <motion.div {...inView} variants={fadeUp}>
+              <div className="section-label">Entregáveis</div>
+              <h2 className="section-title">O que você recebe</h2>
               <p className="section-sub">
                 Todos os documentos são entregues em formato digital via Google Drive compartilhado. O acesso permanece com o cliente ao final do contrato.
               </p>
             </motion.div>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={fadeUp}>
+            <motion.div {...inView} variants={fadeUp}>
               <div style={{ overflowX: "auto" }}>
                 <table className="deliverables-table">
                   <thead>
@@ -586,22 +552,23 @@ export default function Home() {
         </section>
 
         {/* ─── PRICING ─── */}
-        <section id="precos" style={{ background: "var(--panel)" }}>
+        <section id="precos">
           <div className="container">
-            <motion.div className="text-center" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
-              <h2 className="section-title">
-                Pacotes de <em className="display-serif">consultoria</em>
-              </h2>
+            <motion.div {...inView} variants={fadeUp}>
+              <div className="section-label">Preços</div>
+              <h2 className="section-title">Pacotes de consultoria</h2>
               <p className="section-sub">
                 Faturamento mensal via PIX ou boleto. Desconto de 5% para pagamento trimestral antecipado. Reajuste anual pelo IPCA.
               </p>
             </motion.div>
 
-            <motion.div className="pricing-grid" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
+            <motion.div className="pricing-grid" {...inView} variants={stagger}>
               {PRICING.map((p, i) => (
                 <motion.div key={i} className={`pricing-card${p.highlight ? " pricing-card--highlight" : ""}`} variants={fadeUp}>
-                  {p.highlight && <div className="pricing-badge">Mais popular</div>}
-                  <div className="pricing-name">{p.name}</div>
+                  <div className="pricing-head">
+                    <div className="pricing-name">{p.name}</div>
+                    {p.highlight && <div className="pricing-badge">Mais popular</div>}
+                  </div>
                   <div className="pricing-price">
                     <span className="pricing-currency">R$</span>
                     <span className="pricing-value">{p.price}</span>
@@ -611,9 +578,7 @@ export default function Home() {
                   <ul className="pricing-features">
                     {p.features.map((f, j) => (
                       <li key={j} className="pricing-feature">
-                        <div className="pricing-check">
-                          <Check size={10} weight="bold" color="var(--primary)" />
-                        </div>
+                        <Check size={16} weight="regular" />
                         {f}
                       </li>
                     ))}
@@ -623,7 +588,6 @@ export default function Home() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`btn ${p.highlight ? "btn--primary" : "btn--outline"}`}
-                    style={{ width: "100%", justifyContent: "center", fontSize: 14 }}
                   >
                     Contratar {p.name}
                   </a>
@@ -632,16 +596,10 @@ export default function Home() {
               ))}
             </motion.div>
 
-            <motion.div
-              className="ai-card"
-              initial="hidden" whileInView="visible" viewport={{ once: true }}
-              variants={fadeUp}
-            >
+            <motion.div className="ai-card" {...inView} variants={fadeUp}>
               <div className="ai-card-inner">
                 <div className="ai-card-left">
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                    <span className="ai-name">Automação com IA</span>
-                  </div>
+                  <span className="ai-name">Automação com IA</span>
                   <div className="ai-price">
                     A orçar
                     <span className="ai-price-sub">por projeto</span>
@@ -649,7 +607,7 @@ export default function Home() {
                   <p className="ai-tagline">
                     Nenhum pacote fechado — cada projeto é mapeado do zero. Identificamos onde a IA pode eliminar trabalho manual e entregamos a solução certa para sua operação.
                   </p>
-                  <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--primary btn--lg">
+                  <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--inverse">
                     <IconWA /> Solicitar orçamento
                   </a>
                 </div>
@@ -675,26 +633,25 @@ export default function Home() {
         {/* ─── DIFFERENTIALS ─── */}
         <section id="diferenciais">
           <div className="container">
-            <div className="diff-layout">
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
-                <h2 className="section-title">
-                  Nossa <em className="display-serif">diferença</em>
-                </h2>
+            <div className="split">
+              <motion.div className="split-left" {...inView} variants={fadeUp}>
+                <div className="section-label">Diferenciais</div>
+                <h2 className="section-title">Nossa diferença</h2>
                 <p className="section-sub">
                   Não apenas mapeamos processos. Entregamos mudança real, acompanhamos os resultados e permanecemos ao lado da sua equipe.
                 </p>
               </motion.div>
 
-              <motion.div className="diff-list" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
+              <motion.div className="rows" {...inView} variants={stagger}>
                 {DIFFERENTIALS.map((d, i) => (
-                  <motion.div key={i} className="diff-row" variants={fadeUp}>
-                    <div className="diff-row-icon">{d.icon}</div>
-                    <div className="diff-row-content">
-                      <div className="diff-row-title">{d.title}</div>
-                      <div className="diff-row-desc">{d.desc}</div>
+                  <motion.div key={i} className="row" variants={fadeUp}>
+                    <div className="row-icon">{d.icon}</div>
+                    <div className="row-body">
+                      <div className="row-title">{d.title}</div>
+                      <div className="row-desc">{d.desc}</div>
                     </div>
-                    <div className="diff-row-arrow">
-                      <ArrowUpRight size={16} weight="regular" />
+                    <div className="row-caret">
+                      <CaretRight size={16} weight="regular" />
                     </div>
                   </motion.div>
                 ))}
@@ -704,19 +661,17 @@ export default function Home() {
         </section>
 
         {/* ─── CASES ─── */}
-        <section id="cases" className="cases-section">
+        <section id="cases">
           <div className="container">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
-              <h2 className="section-title">
-                <em className="display-serif">Impacto real,</em><br />
-                números que falam.
-              </h2>
+            <motion.div {...inView} variants={fadeUp}>
+              <div className="section-label">Cases</div>
+              <h2 className="section-title">Impacto real, números que falam.</h2>
               <p className="section-sub">
                 Projetos entregues em escritórios contábeis e empresas que precisavam sair do Excel e ganhar controle de verdade.
               </p>
             </motion.div>
 
-            <motion.div className="cases-grid" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
+            <motion.div className="cases-grid" {...inView} variants={stagger}>
               {CASES.map((c, i) => (
                 <motion.div key={i} className="case-card" variants={fadeUp}>
                   <div className="case-sector">{c.sector}</div>
@@ -730,50 +685,47 @@ export default function Home() {
         </section>
 
         {/* ─── NEXT STEPS ─── */}
-        <section id="proximos-passos" style={{ background: "var(--panel)" }}>
-          <div className="container" style={{ maxWidth: 780 }}>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp}>
-              <h2 className="section-title">
-                <em className="display-serif">Como</em> começar
-              </h2>
-              <p className="section-sub">
-                A proposta é válida por 15 dias corridos. Para avançar, basta nos confirmar por WhatsApp. Cuidamos de toda a burocracia.
-              </p>
-            </motion.div>
+        <section id="proximos-passos">
+          <div className="container">
+            <div className="split">
+              <motion.div className="split-left" {...inView} variants={fadeUp}>
+                <div className="section-label">Próximos passos</div>
+                <h2 className="section-title">Como começar</h2>
+                <p className="section-sub">
+                  A proposta é válida por 15 dias corridos. Para avançar, basta nos confirmar por WhatsApp. Cuidamos de toda a burocracia.
+                </p>
+              </motion.div>
 
-            <motion.div className="steps-list" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={stagger}>
-              {NEXT_STEPS.map((s, i) => (
-                <motion.div key={i} className="step-item" variants={fadeUp}>
-                  <div className="step-num">{String(i + 1).padStart(2, "0")}</div>
-                  <div>
-                    <div className="step-title">{s.title}</div>
-                    <div className="step-desc">{s.desc}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+              <motion.div className="rows" {...inView} variants={stagger}>
+                {NEXT_STEPS.map((s, i) => (
+                  <motion.div key={i} className="row" variants={fadeUp}>
+                    <span className="row-num">{String(i + 1).padStart(2, "0")}</span>
+                    <div className="row-body">
+                      <div className="row-title">{s.title}</div>
+                      <div className="row-desc">{s.desc}</div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
           </div>
         </section>
 
         {/* ─── CTA ─── */}
-        <section className="cta-section" id="contato">
-          <div className="container" style={{ maxWidth: 640 }}>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
+        <section id="contato">
+          <div className="container">
+            <motion.div {...inView} variants={stagger}>
               <motion.h2 className="cta-title" variants={fadeUp}>
-                <em className="display-serif cta-serif">Vamos</em> conversar?
+                Vamos conversar?
               </motion.h2>
               <motion.p className="cta-sub" variants={fadeUp}>
                 Agende uma conversa sem compromisso. Em 30 minutos identificamos se faz sentido e como podemos ajudar sua operação a evoluir.
               </motion.p>
-              <motion.div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }} variants={fadeUp}>
-                <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--wa btn--lg">
+              <motion.div className="cta-actions" variants={fadeUp}>
+                <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="btn btn--primary btn--lg">
                   <IconWA /> (85) 93618-0186
                 </a>
-                <a
-                  href="mailto:pvsales33@gmail.com"
-                  className="btn btn--lg"
-                  style={{ background: "rgba(255,255,255,.15)", color: "#fff", border: "1px solid rgba(255,255,255,.25)" }}
-                >
+                <a href="mailto:pvsales33@gmail.com" className="btn btn--outline btn--lg">
                   pvsales33@gmail.com
                 </a>
               </motion.div>
